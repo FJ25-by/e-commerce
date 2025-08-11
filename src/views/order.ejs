@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Perbaiki path CSS -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/food">Food</a></li>
+                <li><a href="/beverages">Beverages</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <% if (user) { %>
+    <li>
+        <form action="/auth/logout" method="POST" style="display:inline;">
+            <button style="background:none; border:none; color:white; cursor:pointer;">Logout</button>
+        </form>
+    </li>
+<% } else { %>
+    <li><a href="/auth/login">Login</a></li>
+<% } %>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Order Confirmation</h1>
+        <p>Thank you for your order, <%= userName %>!</p>
+        <h2>Order Details</h2>
+        <ul>
+            <% orderItems.forEach(item => { %>
+                <li><%= item.productName %> - Quantity: <%= item.quantity %></li>
+            <% }); %>
+        </ul>
+        <p>Total Amount: <%= totalAmount %></p>
+        <p>Your order will be processed shortly.</p>
+    </main>
+    <footer>
+        <p>&copy; 2023 E-Commerce Website</p>
+    </footer>
+</body>
+</html>

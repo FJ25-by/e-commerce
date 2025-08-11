@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order History</title>
+    <link rel="stylesheet" href="/public/css/styles.css" />
+    <style>
+        /* 🌙 Background animasi bulan */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            background: radial-gradient(circle at bottom, #0d1b2a, #000814);
+            overflow-x: hidden;
+        }
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+            border-radius: 50%;
+            animation: floatMoon 6s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(255,255,255,0.8);
+        }
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Header Navbar */
+        header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            margin: 0;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* List Order */
+        .order-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        .order-item:hover {
+            transform: scale(1.02);
+        }
+        .order-status {
+            font-weight: bold;
+            color: #00ff99;
+        }
+        .product-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+        }
+        .product-list li {
+            padding: 4px 0;
+        }
+        .order-date {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="moon"></div>
+
+    <!-- Navbar -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/food">Food</a></li>
+                <li><a href="/beverages">Beverages</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li><a href="/orders/history/<%= user ? user._id : '' %>">Orders</a></li>
+                <% if (user) { %>
+                    <li>
+                        <form action="/auth/logout" method="POST" style="display:inline;">
+                            <button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li><a href="/auth/login">Login</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Order History</h1>
+        <% if (orders.length > 0) { %>
+            <% orders.forEach(order => { 
+                const mergedProducts = {};
+                order.products.forEach(item => {
+                    if (item.productId && item.productId.name && item.productId.price != null) {
+                        const key = item.productId.name + "_" + item.productId.price;
+                        if (!mergedProducts[key]) {
+                            mergedProducts[key] = {
+                                name: item.productId.name,
+                                price: item.productId.price,
+                                quantity: 0
+                            };
+                        }
+                        mergedProducts[key].quantity += item.quantity;
+                    }
+                });
+            %>
+                <div class="order-item">
+                    <div>Status: <span class="order-status"><%= order.status %></span></div>
+                    <div>Products:</div>
+                    <ul class="product-list">
+                        <% Object.values(mergedProducts).forEach(product => { %>
+                            <li>
+                                <strong><%= product.name %></strong> (x<%= product.quantity %>)<br>
+                                Harga satuan: Rp <%= product.price.toLocaleString() %><br>
+                                Total harga: Rp <%= (product.price * product.quantity).toLocaleString() %>
+                            </li>
+                        <% }); %>
+                    </ul>
+                    <div class="order-date">Order Date: <%= new Date(order.createdAt).toLocaleDateString() %></div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p style="text-align:center;">No orders found.</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 E-Commerce Website</p>
+    </footer>
+</body>
+</html>

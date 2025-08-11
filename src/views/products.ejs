@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - E-commerce Website</title>
+
+  <!-- SCRIPT THEME -->
+  <script>
+    function applyTheme(theme) {
+      if (theme === 'system') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      localStorage.setItem('theme', theme);
+      const select = document.getElementById('theme-toggle');
+      if (select) select.value = theme;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'system';
+      applyTheme(savedTheme);
+      const select = document.getElementById('theme-toggle');
+      if (select) {
+        select.value = savedTheme;
+        select.addEventListener('change', function () {
+          applyTheme(this.value);
+        });
+      }
+    });
+  </script>
+
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --nav-bg: rgba(255,255,255,0.9);
+      --card-bg: #f4f4f4;
+      --price-color: #d70018;
+      --moon-display: none;
+      --sun-display: block;
+      --stars-opacity: 0;
+      --earth-display: none;
+    }
+
+    html[data-theme='dark'] {
+      --bg-color: #0b0c2a;
+      --text-color: #f0f0f0;
+      --nav-bg: rgba(0, 0, 0, 0.6);
+      --card-bg: rgba(255,255,255,0.05);
+      --price-color: #00f5d4;
+      --moon-display: block;
+      --sun-display: none;
+      --stars-opacity: 1;
+      --earth-display: block;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --bg-color: #0b0c2a;
+        --text-color: #f0f0f0;
+        --nav-bg: rgba(0, 0, 0, 0.6);
+        --card-bg: rgba(255,255,255,0.05);
+        --price-color: #00f5d4;
+        --moon-display: block;
+        --sun-display: none;
+        --stars-opacity: 1;
+        --earth-display: block;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+
+    .sun, .moon {
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .sun {
+      display: var(--sun-display);
+      background: radial-gradient(circle, #fff700, #ff9500);
+      box-shadow: 0 0 60px rgba(255, 204, 0, 0.7);
+      animation: moveSun 30s linear infinite;
+    }
+
+    .moon {
+      display: var(--moon-display);
+      background: radial-gradient(circle, #fefefea7, #aaa);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+      animation: moveMoon 30s linear infinite;
+    }
+
+    @keyframes moveSun {
+      0% { left: -200px; top: 10%; }
+      50% { left: 100%; top: 15%; }
+      100% { left: -200px; top: 10%; }
+    }
+
+    @keyframes moveMoon {
+      0% { left: -200px; top: 10%; }
+      50% { left: 100%; top: 20%; }
+      100% { left: -200px; top: 10%; }
+    }
+
+    .stars {
+      opacity: var(--stars-opacity);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    .star:nth-child(odd) { animation-delay: 1s; }
+
+    @keyframes twinkle {
+      from { opacity: 0.1; }
+      to { opacity: 1; }
+    }
+
+    .earth {
+      display: var(--earth-display);
+      position: fixed;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle at center, #3af, #025);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(0,255,255,0.4);
+      animation: spinEarth 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes spinEarth {
+      0% { transform: translateX(-50%) rotate(0deg); }
+      100% { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    nav {
+      background: var(--nav-bg);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin: 0;
+    }
+
+    nav ul li {
+      display: inline;
+    }
+
+    nav a, nav button, nav select {
+      color: var(--text-color);
+      background: none;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      color: var(--price-color);
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: var(--nav-bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="sun"></div>
+  <div class="moon"></div>
+  <div class="earth"></div>
+  <div class="stars">
+    <div class="star" style="top:10%;left:15%"></div>
+    <div class="star" style="top:30%;left:40%"></div>
+    <div class="star" style="top:50%;left:60%"></div>
+    <div class="star" style="top:70%;left:80%"></div>
+    <div class="star" style="top:20%;left:70%"></div>
+  </div>
+
+  <nav>
+    <ul>
+      <li>
+        <select id="theme-toggle">
+          <option value="system">🖥️ System</option>
+          <option value="light">🌞 Light</option>
+          <option value="dark">🌙 Dark</option>
+        </select>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/food">Food</a></li>
+      <li><a href="/beverages">Beverages</a></li>
+      <li><a href="/cart">Cart</a></li>
+      <% if (user) { %>
+        <li>
+          <form action="/auth/logout" method="POST" style="display:inline;">
+            <button>Logout</button>
+          </form>
+        </li>
+      <% } else { %>
+        <li><a href="/auth/login">Login</a></li>
+      <% } %>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>Products</h1>
+    <section class="product-grid">
+      <% if (products && products.length > 0) { %>
+        <% products.forEach(product => { %>
+          <div class="product-card">
+            <% if (product.image) { %>
+              <img src="/images/<%= product.image %>" alt="<%= product.name %>">
+            <% } else { %>
+              <img src="/images/default-product.png" alt="No Image">
+            <% } %>
+            <h3><%= product.name %></h3>
+            <p class="price">Rp<%= product.price.toLocaleString() %></p>
+
+            <form action="/cart/add" method="POST">
+              <input type="hidden" name="productId" value="<%= product._id %>">
+              <button type="submit">Tambahkan ke Keranjang</button>
+            </form>
+
+            <form action="/orders/place" method="POST">
+              <input type="hidden" name="productIds[]" value="<%= product._id %>">
+              <button type="submit">Pesan</button>
+            </form>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p>Tidak ada produk tersedia.</p>
+      <% } %>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 YUJI E-Commerce</p>
+  </footer>
+</body>
+</html>

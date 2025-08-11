@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - E-Commerce Website</title>
+    <style>
+        /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0f0f0;
+    min-height: 100vh;
+    background: #0b0c2a;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated Moon Background */
+body::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: -200px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at center, #fefefe, #aaa);
+    border-radius: 50%;
+    box-shadow: 0 0 30px 15px rgba(255,255,255,0.3);
+    animation: moveMoon 30s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveMoon {
+    0% {
+        left: -200px;
+        top: 10%;
+    }
+    50% {
+        left: 100%;
+        top: 20%;
+    }
+    100% {
+        left: -200px;
+        top: 10%;
+    }
+}
+
+/* Navigation */
+nav {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1rem 2rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    color: #ffffff;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #ffffff33;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+    background: transparent;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #dcdcdc;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+    max-width: 900px;
+    margin: auto;
+}
+
+main h2, main h1 {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #fefefe;
+}
+
+#featured-products,
+#categories {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#featured-products > div,
+#categories > a {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    color: #fff;
+    text-align: center;
+    min-width: 150px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+#categories > a:hover,
+#featured-products > div:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Form Styles */
+form {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    margin: 2rem auto;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+form div {
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: block;
+    color: #ddd;
+    margin-bottom: 0.5rem;
+}
+
+form input {
+    width: 100%;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+}
+
+button {
+    background-color: #00b4d8;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0096c7;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255,255,255,0.05);
+    color: #aaa;
+    border-top: 1px solid #333;
+    margin-top: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #categories, #featured-products {
+        flex-direction: column;
+    }
+
+    form {
+        width: 90%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/food">Food</a></li>
+            <li><a href="/beverages">Beverages</a></li>
+            <li><a href="/cart">Shopping Cart</a></li>
+            <% if (user) { %>
+    <li>
+        <form action="/auth/logout" method="POST" style="display:inline;">
+            <button style="background:none; border:none; color:rgb(0, 0, 0); cursor:pointer;">Logout</button>
+        </form>
+    </li>
+<% } else { %>
+    <li><a href="/auth/login">Login</a></li>
+<% } %>
+        </ul>
+    </nav>
+    <header>
+        <h1>Welcome to YUJI E-Commerce Store</h1>
+        <p>Your one-stop shop for food and beverages.</p>
+    </header>
+    <main>
+        <section>
+            <h2>Featured Products</h2>
+            <div id="featured-products">
+                <!-- Featured products will be dynamically inserted here -->
+            </div>
+        </section>
+        <section>
+            <h2>Categories</h2>
+            <div id="categories">
+                <a href="/food">Food</a>
+                <a href="/beverages">Beverages</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; YUJI E-Commerce</p>
+    </footer>
+    <script src="/public/js/main.js"></script>
+</body>
+</html>

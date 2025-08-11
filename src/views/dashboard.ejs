@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - E-commerce Website</title>
+
+  <!-- SCRIPT THEME -->
+  <script>
+    function applyTheme(theme) {
+      if (theme === 'system') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      localStorage.setItem('theme', theme);
+      const select = document.getElementById('theme-toggle');
+      if (select) select.value = theme;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'system';
+      applyTheme(savedTheme);
+      const select = document.getElementById('theme-toggle');
+      if (select) {
+        select.value = savedTheme;
+        select.addEventListener('change', function () {
+          applyTheme(this.value);
+        });
+      }
+    });
+  </script>
+
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --nav-bg: rgba(255,255,255,0.9);
+      --card-bg: #f4f4f4;
+      --price-color: #d70018;
+      --btn-cart-colors: #ff9800, #ff5722, #ff7043;
+      --btn-order-colors: #4caf50, #2e7d32, #66bb6a;
+      --btn-text-color: white;
+    }
+
+    html[data-theme='dark'] {
+      --bg-color: #0b0c2a;
+      --text-color: #f0f0f0;
+      --nav-bg: rgba(0, 0, 0, 0.6);
+      --card-bg: rgba(255,255,255,0.05);
+      --price-color: #00f5d4;
+      --btn-cart-colors: #ffb74d, #ff7043, #ff9800;
+      --btn-order-colors: #66bb6a, #388e3c, #4caf50;
+      --btn-text-color: #fff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --bg-color: #0b0c2a;
+        --text-color: #f0f0f0;
+        --nav-bg: rgba(0, 0, 0, 0.6);
+        --card-bg: rgba(255,255,255,0.05);
+        --price-color: #00f5d4;
+        --btn-cart-colors: #ffb74d, #ff7043, #ff9800;
+        --btn-order-colors: #66bb6a, #388e3c, #4caf50;
+        --btn-text-color: #fff;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+
+    nav {
+      background: var(--nav-bg);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin: 0;
+    }
+
+    nav a, nav button, nav select {
+      color: var(--text-color);
+      background: none;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      color: var(--price-color);
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: var(--nav-bg);
+    }
+
+    /* Tombol container */
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .button-group form {
+      flex: 1;
+    }
+
+    /* Tombol elegan */
+    .btn {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      color: var(--btn-text-color);
+      background-size: 300% 300%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-position 2s ease;
+      animation: gradientMove 8s ease infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Efek shine tipis */
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 80%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      transition: left 1.2s ease;
+    }
+
+    .btn:hover::after {
+      left: 120%;
+    }
+
+    .btn-cart {
+      background-image: linear-gradient(135deg, var(--btn-cart-colors));
+    }
+
+    .btn-order {
+      background-image: linear-gradient(135deg, var(--btn-order-colors));
+    }
+
+    .btn:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      background-position: right center;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li>
+        <select id="theme-toggle">
+          <option value="system">🖥️ System</option>
+          <option value="light">🌞 Light</option>
+          <option value="dark">🌙 Dark</option>
+        </select>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/food">Food</a></li>
+      <li><a href="/beverages">Beverages</a></li>
+      <li><a href="/cart">Cart</a></li>
+      <li><a href="/orders/history/<%= user._id %>">Order History</a></li>
+      <% if (user) { %>
+        <li>
+          <form action="/auth/logout" method="POST">
+            <button>Logout</button>
+          </form>
+        </li>
+      <% } else { %>
+        <li><a href="/auth/login">Login</a></li>
+      <% } %>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>Welcome, <%= user.username %>!</h1>
+    <section>
+      <h2>Produk Rekomendasi</h2>
+      <div class="product-grid">
+        <% if (products && products.length > 0) { %>
+          <% products.forEach(product => { %>
+            <div class="product-card">
+              <img src="/images/<%= product.image %>" alt="<%= product.name %>">
+              <h3><%= product.name %></h3>
+              <p class="price">Rp<%= product.price.toLocaleString() %></p>
+
+              <!-- Tombol -->
+              <div class="button-group">
+                <form action="/cart/add" method="POST">
+                  <input type="hidden" name="productId" value="<%= product._id %>">
+                  <button type="submit" class="btn btn-cart">Add to Cart</button>
+                </form>
+
+                <form action="/orders/place" method="POST">
+                  <input type="hidden" name="productIds[]" value="<%= product._id %>">
+                  <button type="submit" class="btn btn-order">Order</button>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>Tidak ada produk tersedia.</p>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 YUJI E-Commerce</p>
+  </footer>
+</body>
+</html>

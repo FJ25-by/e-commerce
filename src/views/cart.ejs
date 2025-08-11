@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+
+    <!-- Font Awesome untuk ikon tempat sampah -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 🌙 Background animasi bulan */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            background: radial-gradient(circle at bottom, #0d1b2a, #000814);
+            overflow-x: hidden;
+        }
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+            border-radius: 50%;
+            animation: floatMoon 6s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(255,255,255,0.8);
+        }
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            margin: 0;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        main {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        li:hover {
+            transform: scale(1.02);
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-decrease, .btn-increase {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        .btn-decrease:hover, .btn-increase:hover {
+            transform: scale(1.1);
+        }
+        .btn-remove {
+            background: transparent;
+            border: none;
+            color: #ff4d4d;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            margin-left: 5px;
+        }
+        .btn-remove:hover {
+            color: #e60000;
+            transform: scale(1.2);
+            transition: 0.2s;
+        }
+        h3 {
+            text-align: right;
+            margin-top: 15px;
+        }
+        form[action="/order"] button {
+            background: #52ab98;
+            color: white;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Efek transisi halus untuk angka */
+        .fade {
+            animation: fadeChange 0.3s ease;
+        }
+        @keyframes fadeChange {
+            0% { opacity: 0.2; transform: scale(0.9); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="moon"></div>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/food">Food</a></li>
+                <li><a href="/beverages">Beverages</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <% if (user) { %>
+                    <li>
+                        <form action="/auth/logout" method="POST" style="display:inline;">
+                            <button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li><a href="/auth/login">Login</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Your Shopping Cart</h1>
+        <div id="cart-items">
+            <% if (cartItems.length > 0) { %>
+                <ul id="cart-list">
+                    <% cartItems.forEach(item => { %>
+                        <li data-id="<%= item.productId._id %>">
+                            <h2><%= item.productId.name %></h2>
+                            <p>Price: <span class="price">Rp <%= item.productId.price.toLocaleString('id-ID') %></span></p>
+
+                            <div class="quantity-controls">
+                                <button class="btn-decrease">−</button>
+                                <span class="quantity"><%= item.quantity %></span>
+                                <button class="btn-increase">+</button>
+
+                                <!-- Tombol Remove -->
+                                <form action="/cart/remove/<%= item.productId._id %>" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn-remove" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    <% }) %>
+                </ul>
+
+                <h3>Total: Rp <span id="total-price"><%= totalPrice.toLocaleString('id-ID') %></span></h3>
+
+                <form action="/orders/place" method="POST">
+                <button type="submit">Order Now</button>
+                </form>
+
+
+            <% } else { %>
+                <p>Your cart is empty.</p>
+            <% } %>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 E-Commerce Website</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.btn-increase, .btn-decrease').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const li = e.target.closest('li');
+                    const productId = li.dataset.id;
+                    const action = e.target.classList.contains('btn-increase') ? 'increase' : 'decrease';
+
+                    const res = await fetch('/cart/update-ajax', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ productId, action })
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        const qtyEl = li.querySelector('.quantity');
+                        const totalEl = document.getElementById('total-price');
+
+                        // Update value
+                        qtyEl.textContent = data.newQuantity;
+                        totalEl.textContent = data.totalPrice.toLocaleString('id-ID');
+
+                        // Tambahkan animasi
+                        qtyEl.classList.add('fade');
+                        totalEl.classList.add('fade');
+
+                        // Hapus class setelah animasi selesai
+                        setTimeout(() => {
+                            qtyEl.classList.remove('fade');
+                            totalEl.classList.remove('fade');
+                        }, 300);
+                    } else {
+                        alert('Gagal update quantity');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

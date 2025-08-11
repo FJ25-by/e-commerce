@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beverages - E-Commerce Website</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/food">Food</a></li>
+                <li><a href="/beverages">Beverages</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Beverages</h1>
+        <section id="beverage-list">
+            <% beverages.forEach(function(beverage) { %>
+                <div class="beverage-item">
+                    <h2><%= beverage.name %></h2>
+                    <p>Price: $<%= beverage.price.toFixed(2) %></p>
+                    <p><%= beverage.description %></p>
+                    <button onclick="addToCart('<%= beverage.id %>')">Add to Cart</button>
+                </div>
+            <% }); %>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 E-Commerce Website</p>
+    </footer>
+    <script src="/public/js/main.js"></script>
+</body>
+</html>

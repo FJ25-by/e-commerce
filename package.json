@@ -1,0 +1,33 @@
+{
+  "name": "ecommerce-website",
+  "version": "1.0.0",
+  "description": "An attractive e-commerce website with product search, shopping cart, and order placement features.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^8.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "keywords": [
+    "ecommerce",
+    "website",
+    "shopping",
+    "cart",
+    "products"
+  ],
+  "author": "Your Name",
+  "license": "ISC"
+}

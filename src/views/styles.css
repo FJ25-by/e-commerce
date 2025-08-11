@@ -1,0 +1,170 @@
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f6f9fc;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #0077cc;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #005999;
+}
+
+/* Navigation */
+nav {
+    background-color: #ffffff;
+    border-bottom: 2px solid #eaeaea;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #0077cc;
+    color: white;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-top: 0;
+}
+
+/* Main Sections */
+main {
+    padding: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Featured Products and Categories */
+#featured-products, #categories {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+#featured-products > div, #categories > a {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#featured-products > div:hover, #categories > a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+#categories > a {
+    text-align: center;
+    flex: 1;
+    min-width: 120px;
+    font-weight: bold;
+}
+
+/* Login Form */
+form {
+    background: white;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+form div {
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    background-color: #0077cc;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #005fa3;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #f0f0f0;
+    color: #666;
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #featured-products, #categories {
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+}
